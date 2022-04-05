@@ -25,11 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\buildingblocks\MIU.Core\SB.Core.csproj" />
-    <ProjectReference Include="..\..\..\buildingblocks\MIU.WebAPI.Core\SB.WebAPI.Core.csproj" />
-    <ProjectReference Include="..\MIU.Movimentation.Application\SB.Credito.Application.csproj" />
-    <ProjectReference Include="..\MIU.Movimentation.Domain\SB.Credito.Domain.csproj" />
-    <ProjectReference Include="..\MIU.Movimentation.Infra\SB.Credito.Infra.csproj" />
+    <ProjectReference Include="..\..\..\buildingblocks\SB.WebAPI.Core\SB.WebAPI.Core.csproj" />
+    <ProjectReference Include="..\SB.Credito.Application\SB.Credito.Application.csproj" />
+    <ProjectReference Include="..\SB.Credito.Domain\SB.Credito.Domain.csproj" />
+    <ProjectReference Include="..\SB.Credito.Infra\SB.Credito.Infra.csproj" />
   </ItemGroup>
 
 </Project>
