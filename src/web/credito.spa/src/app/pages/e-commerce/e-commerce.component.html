@@ -1,0 +1,241 @@
+<nb-card>
+  <nb-card-header> Crédito Financeiros </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (delete)="onDeleteCredito($event)"
+      (edit)="onEditCredito($event.data, creditoEdit)"
+    >
+    </ng2-smart-table>
+    <button
+      nbButton
+      status="success"
+      class="btn-add"
+      (click)="addCredito(creditoAdd)"
+    >
+      <nb-icon [icon]="icon" pack="fa" class="success-icon"></nb-icon>
+      Adicionar
+    </button>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #creditoEdit>
+  <nb-card style="width: 1000px">
+    <nb-card-header>
+      <nb-icon [icon]="iconMoney" pack="fa" class="success-icon"></nb-icon>
+      Editar Créditos Financeiros
+    </nb-card-header>
+    <nb-card-body>
+      <form class="form-horizontal" [formGroup]="creditoForm">
+        <div class="form-group g-0">
+          <div class="col-md-6">
+            <label for="usuarioCod" class="label">Código do Usuário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="id"
+              placeholder="Código do Usuário"
+              mask="0*"
+              formControlName="usuarioCod"
+            />
+          </div>
+          <div class="col-md-6 col-custom">
+            <label for="usuarioNome" class="label">Nome Usuário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="usuarioNome"
+              placeholder="Nome do Usuário"
+              formControlName="usuarioNome"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6">
+            <label for="cpf" class="label">CPF</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="cpf"
+              placeholder="CPF"
+              mask="000.000.000-00"
+              formControlName="cpf"
+            />
+          </div>
+          <div class="col-md-6 col-custom">
+            <label for="dataNascimento" class="label">Data de Nascimento</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="dataNascimento"
+              placeholder="Data de Nascimento"
+              mask="d0/M0/0000"
+              formControlName="dataNascimento"
+            />
+          </div>
+        </div>
+
+        <div class="form-group g-0">
+          <div class="col-md-4">
+            <label for="salario" class="label">Salário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="salario"
+              placeholder="Salário"
+              mask="0*,00"
+              formControlName="salario"
+            />
+          </div>
+        </div>
+
+        <div class="form-group g-0">
+          <div class="col-md-12 col-custom">
+            <label for="observacao" class="label">Observações</label>
+            <textarea
+              type="email"
+              nbInput
+              fullWidth
+              id="observacao"
+              placeholder="Observações"
+              formControlName="observacao"
+            >
+            </textarea>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="success"
+        class="btn-add"
+        (click)="updateCredito()"
+      >
+        Salvar
+      </button>
+      <button
+        nbButton
+        status="danger"
+        class="btn-add"
+        (click)="cancelCredito(dialog)"
+      >
+        Cancelar
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #creditoAdd>
+  <nb-card style="width: 1000px">
+    <nb-card-header>
+      <nb-icon [icon]="iconMoney" pack="fa" class="success-icon"></nb-icon>
+      Adicionar Créditos Financeiros
+    </nb-card-header>
+    <nb-card-body>
+      <form class="form-horizontal" [formGroup]="creditoForm">
+        <div class="form-group g-0">
+          <div class="col-md-6">
+            <label for="usuarioCod" class="label">Código do Usuário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="id"
+              mask="0*"
+              formControlName="usuarioCod"
+            />
+          </div>
+          <div class="col-md-6 col-custom">
+            <label for="usuarioNome" class="label">Nome Usuário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="usuarioNome"
+              placeholder="Nome do Usuário"
+              formControlName="usuarioNome"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6">
+            <label for="cpf" class="label">CPF</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="cpf"
+              placeholder="CPF"
+              mask="000.000.000-00"
+              formControlName="cpf"
+            />
+          </div>
+          <div class="col-md-6 col-custom">
+            <label for="dataNascimento" class="label">Data de Nascimento</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="dataNascimento"
+              placeholder="Data de Nascimento"
+              mask="d0/M0/0000"
+              formControlName="dataNascimento"
+            />
+          </div>
+        </div>
+
+        <div class="form-group g-0">
+          <div class="col-md-4">
+            <label for="salario" class="label">Salário</label>
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              id="salario"
+              placeholder="Salário"
+              mask="0*,00"
+              formControlName="salario"
+            />
+          </div>
+        </div>
+
+        <div class="form-group g-0">
+          <div class="col-md-12 col-custom">
+            <label for="observacao" class="label">Observações</label>
+            <textarea
+              type="email"
+              nbInput
+              fullWidth
+              id="observacao"
+              placeholder="Observações"
+              formControlName="observacao"
+            >
+            </textarea>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" class="btn-add" (click)="saveCredito()">
+        Salvar
+      </button>
+      <button
+        nbButton
+        status="danger"
+        class="btn-add"
+        (click)="cancelCredito(dialog)"
+      >
+        Cancelar
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

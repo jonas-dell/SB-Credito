@@ -1,0 +1,76 @@
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
+using SB.Core.Data;
+using SB.Core.Domain;
+using SB.Core.Mediator;
+using SB.Core.Messages;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SB.Credito.Infra
+{
+    public class CreditoContext : DbContext, IUnitOfWork
+    {
+        private readonly IMediatorHandler _mediatorHandler;
+
+        public CreditoContext(DbContextOptions<CreditoContext> options, IMediatorHandler mediatorHandler)
+            : base(options)
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.AutoDetectChangesEnabled = false;
+            _mediatorHandler = mediatorHandler;
+        }
+
+        public DbSet<Domain.Entities.Credito> Creditos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<Event>();
+
+            foreach (var property in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
+                property.SetColumnType("VARCHAR(250)");
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreditoContext).Assembly);
+        }
+
+        public async Task<bool> Commit()
+        {
+            var successful = await base.SaveChangesAsync() > 0;
+
+            if (successful) await _mediatorHandler.PublisherEvent(this);
+
+            return successful;
+        }
+    }
+
+    public static class MediatorExtension
+    {
+        public static async Task PublisherEvent<T>(this IMediatorHandler mediator, T context) where T : DbContext
+        {
+            var domainEntities = context.ChangeTracker
+                .Entries<Entity>()
+                .Where(x => x.Entity.Notifications != null && x.Entity.Notifications.Any());
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.Notifications)
+                .ToList();
+
+            domainEntities.ToList()
+                .ForEach(entity => entity.Entity.ClearEvents());
+
+            var tasks = domainEvents
+                .Select(async (domainEvent) =>
+                {
+                    await mediator.PublisherEvent(domainEvent);
+                });
+
+            await Task.WhenAll(tasks);
+        }
+    }
+}
